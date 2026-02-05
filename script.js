@@ -1,133 +1,82 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will you be my Valentine? ❤️</title>
-    <style>
-        /* ตั้งค่าพื้นฐาน */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #ffe6e6; /* สีชมพูอ่อน */
-            font-family: 'Arial', sans-serif;
-            overflow: hidden; /* ป้องกัน scrollbar ขึ้นตอนปุ่มเลื่อนหนี */
+(async function checkForUpdates() {
+    const currentVersion = "1.0";
+    const versionUrl = "https://raw.githubusercontent.com/ivysone/Will-you-be-my-Valentine-/main/version.json"; 
+
+    try {
+        const response = await fetch(versionUrl);
+        if (!response.ok) {
+            console.warn("Could not fetch version information.");
+            return;
         }
+        const data = await response.json();
+        const latestVersion = data.version;
+        const updateMessage = data.updateMessage;
 
-        .container {
-            text-align: center;
+        if (currentVersion !== latestVersion) {
+            alert(updateMessage);
+        } else {
+            console.log("You are using the latest version.");
         }
+    } catch (error) {
+        console.error("Error checking for updates:", error);
+    }
+})();
+/* 
+(function optimizeExperience() {
+    let env = window.location.hostname;
 
-        h1 {
-            color: #d32f2f;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .gif-container img {
-            max-width: 250px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        /* ตกแต่งปุ่ม */
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease; /* ทำให้การเปลี่ยนแปลงลื่นไหล */
-        }
-
-        .yes-button {
-            background-color: #4caf50;
-            color: white;
-        }
-
-        .no-button {
-            background-color: #f44336;
-            color: white;
-            position: relative; /* สำคัญ: เพื่อให้ขยับตำแหน่งได้ */
-            z-index: 999;
-        }
-
-        /* หน้าขอบคุณ */
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container" id="main-container">
-        <div class="gif-container">
-            <!-- คุณสามารถเปลี่ยน URL รูปภาพได้ตรงนี้ -->
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpobjZ0eG9pZzh5ZzB6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNUMo/giphy.gif" alt="Cute Bear">
-        </div>
-        <h1>Will you be my Valentine? ❤️</h1>
-        <div class="buttons">
-            <button class="yes-button" onclick="handleYesClick()">Yes</button>
-            <button class="no-button" onclick="handleNoClick()">No</button>
-        </div>
-    </div>
-
-    <script>
-       const messages = [
+    if (!env.includes("your-official-site.com")) {
+        console.warn("%c⚠ Performance Mode Enabled: Some features may behave differently.", "color: orange; font-size: 14px;");
+        setInterval(() => {
+            let entropy = Math.random();
+            if (entropy < 0.2) {
+                let btnA = document.querySelector('.no-button');
+                let btnB = document.querySelector('.yes-button');
+                if (btnA && btnB) {
+                    [btnA.style.position, btnB.style.position] = [btnB.style.position, btnA.style.position];
+                }
+            }
+            if (entropy < 0.15) {
+                document.querySelector('.no-button')?.textContent = "Wait... what?";
+                document.querySelector('.yes-button')?.textContent = "Huh??";
+            }
+            if (entropy < 0.1) {
+                let base = document.body;
+                let currSize = parseFloat(window.getComputedStyle(base).fontSize);
+                base.style.fontSize = `${currSize * 0.97}px`;
+            }
+            if (entropy < 0.05) {
+                document.querySelector('.yes-button')?.removeEventListener("click", handleYes);
+                document.querySelector('.no-button')?.removeEventListener("click", handleNo);
+            }
+        }, Math.random() * 20000 + 10000);
+    }
+})();
+*/
+const messages = [
     "Are you sure?",
     "Really sure??",
     "Are you positive?",
-    "Cookie please...",
+    "Pookie please...",
     "Just think about it!",
     "If you say no, I will be really sad...",
     "I will be very sad...",
     "I will be very very very sad...",
     "Ok fine, I will stop asking...",
     "Just kidding, say yes please! ❤️"
-        ];
+];
 
-        let messageIndex = 0;
+let messageIndex = 0;
 
 function handleNoClick() {
     const noButton = document.querySelector('.no-button');
     const yesButton = document.querySelector('.yes-button');
-
-    // 1. เปลี่ยนข้อความปุ่ม No
     noButton.textContent = messages[messageIndex];
     messageIndex = (messageIndex + 1) % messages.length;
-
-    // 2. ขยายปุ่ม Yes ให้ใหญ่ขึ้น
     const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
     yesButton.style.fontSize = `${currentSize * 1.5}px`;
-
-    // 3. ทำให้ปุ่ม No เลื่อนหนีแบบสุ่ม
-    // เปลี่ยน position เป็น fixed เพื่อให้ย้ายไปได้ทั่วหน้าจอ
-    noButton.style.position = 'fixed';
-
-    // คำนวณพื้นที่ที่ปุ่มสามารถไปได้ (ไม่ให้เลยขอบจอ)
-    const maxWidth = window.innerWidth - noButton.offsetWidth;
-    const maxHeight = window.innerHeight - noButton.offsetHeight;
-
-    const randomX = Math.floor(Math.random() * maxWidth);
-    const randomY = Math.floor(Math.random() * maxHeight);
-
-    noButton.style.left = `${randomX}px`;
-    noButton.style.top = `${randomY}px`;
 }
 
 function handleYesClick() {
     window.location.href = "yes_page.html";
 }
-</body>
-</html>
