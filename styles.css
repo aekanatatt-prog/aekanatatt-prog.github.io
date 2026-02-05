@@ -41,9 +41,6 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    
-    transition: all 0.2s ease; 
-    z-index: 999;
   }
   
   .gif_container img {
