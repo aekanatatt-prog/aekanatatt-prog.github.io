@@ -99,48 +99,35 @@
 
         let messageIndex = 0;
 
-        function handleNoClick() {
-            const noButton = document.querySelector('.no-button');
-            const yesButton = document.querySelector('.yes-button');
+function handleNoClick() {
+    const noButton = document.querySelector('.no-button');
+    const yesButton = document.querySelector('.yes-button');
 
-            // 1. เปลี่ยนข้อความในปุ่ม No
-            noButton.textContent = messages[messageIndex];
-            messageIndex = (messageIndex + 1) % messages.length;
+    // 1. เปลี่ยนข้อความปุ่ม No
+    noButton.textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
 
-            // 2. ขยายขนาดปุ่ม Yes ให้ใหญ่ขึ้นเรื่อยๆ
-            const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
-            yesButton.style.fontSize = `${currentSize * 1.3}px`;
-            yesButton.style.padding = `${parseFloat(window.getComputedStyle(yesButton).paddingTop) * 1.2}px ${parseFloat(window.getComputedStyle(yesButton).paddingLeft) * 1.2}px`;
+    // 2. ขยายปุ่ม Yes ให้ใหญ่ขึ้น
+    const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+    yesButton.style.fontSize = `${currentSize * 1.5}px`;
 
-            // 3. ทำให้ปุ่ม No เลื่อนหนี (Random Position)
-            noButton.style.position = 'fixed'; // เปลี่ยนจาก relative เป็น fixed เพื่อให้ลอยทั่วจอ
-            
-            // คำนวณขอบเขตหน้าจอ
-            const padding = 50;
-            const maxWidth = window.innerWidth - noButton.offsetWidth - padding;
-            const maxHeight = window.innerHeight - noButton.offsetHeight - padding;
+    // 3. ทำให้ปุ่ม No เลื่อนหนีแบบสุ่ม
+    // เปลี่ยน position เป็น fixed เพื่อให้ย้ายไปได้ทั่วหน้าจอ
+    noButton.style.position = 'fixed';
 
-            // สุ่มตำแหน่งใหม่
-            const randomX = Math.floor(Math.random() * (maxWidth - padding) + padding);
-            const randomY = Math.floor(Math.random() * (maxHeight - padding) + padding);
+    // คำนวณพื้นที่ที่ปุ่มสามารถไปได้ (ไม่ให้เลยขอบจอ)
+    const maxWidth = window.innerWidth - noButton.offsetWidth;
+    const maxHeight = window.innerHeight - noButton.offsetHeight;
 
-            noButton.style.left = `${randomX}px`;
-            noButton.style.top = `${randomY}px`;
-        }
+    const randomX = Math.floor(Math.random() * maxWidth);
+    const randomY = Math.floor(Math.random() * maxHeight);
 
-        function handleYesClick() {
-            // เมื่อกด Yes ให้ย้ายไปหน้าอื่น หรือแสดงข้อความสำเร็จ
-            // ในที่นี้จะเปลี่ยนหน้าไปยัง URL ที่ต้องการ หรือเปลี่ยน content ในหน้าเดิมก็ได้
-            document.getElementById('main-container').innerHTML = `
-                <div class="gif-container">
-                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpobjZ0eG9pZzh5ZzB6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6Z3Z6JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l41lH4ADRtAYnGsLe/giphy.gif" alt="Happy">
-                </div>
-                <h1 style="color: #e91e63;">เย้! แล้วเจอกันนะจ๊ะ! ❤️</h1>
-            `;
-            // ถ้าคุณมีหน้าแยก ให้ใช้คำสั่งนี้แทน:
-            // window.location.href = "yes_page.html";
-        }
-    </script>
+    noButton.style.left = `${randomX}px`;
+    noButton.style.top = `${randomY}px`;
+}
 
+function handleYesClick() {
+    window.location.href = "yes_page.html";
+}
 </body>
 </html>
